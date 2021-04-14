@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css"/>
+    <script src="https://kit.fontawesome.com/fb5a08475b.js" crossorigin="anonymous"></script>
+    <title>Search</title>
+</head>
+<body>
+    <div class="search_bar">
+        <form action="/search_result" method="post">
+            <input type="search" name="search_input">
+        </form>
+        <button class="search_btn"><i class="fas fa-search"></i></button>
+    </div>
+    <div class = "result"></div>
+    <script>
+        document.querySelector('.search_btn').addEventListener('click', function(){
+            var inputdata = document.forms[0].elements[0].value;
+            sendAjax('http://localhost:3000/ajax_search_result', inputdata);
+        })
+
+        function sendAjax(url, data) {
+            var data = {'search' : data};
+            data = JSON.stringify(data);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url)
+            xhr.setRequestHeader('Content-Type', "application/json");
+            xhr.send(data);
+            xhr.addEventListener('load', function(){
+                var result = JSON.parse(xhr.responseText);
+                document.querySelector(".result").innerHTML = result.search;
+            })
+        }
+    </script>
+</body>
+</html>
